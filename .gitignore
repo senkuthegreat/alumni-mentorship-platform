@@ -2,3 +2,5 @@
 .vercel/
 .system_generated/
 *.log
+
+.vercel
