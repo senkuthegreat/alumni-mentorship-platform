@@ -1,0 +1,4 @@
+.vercel
+.vercel/
+.system_generated/
+*.log

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Mentorship Platform | NSUT Connection</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <i data-lucide="graduation-cap"></i>
+        </div>
+        <div class="logo-text">AlumConnect</div>
+      </div>
+      
+      <ul class="nav-links">
+        <li>
+          <a href="#home" class="nav-link active" data-view="home">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="#mentors" class="nav-link" data-view="mentors">
+            <i data-lucide="users"></i>
+            <span>Mentor Profiles</span>
+          </a>
+        </li>
+        <li>
+          <a href="#forum" class="nav-link" data-view="forum">
+            <i data-lucide="message-square"></i>
+            <span>Discussion Forum</span>
+          </a>
+        </li>
+        <li>
+          <a href="#dashboard" class="nav-link" data-view="dashboard">
+            <i data-lucide="sliders"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+      </ul>
+      
+      <!-- User Switcher Badge -->
+      <div class="user-profile-badge">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Guest" alt="User Avatar" class="user-avatar" id="global-user-avatar">
+        <div class="user-info">
+          <div class="user-name" id="global-user-name">Guest Student</div>
+          <select id="user-role-toggle" class="user-role-selector">
+            <option value="student">Role: Student</option>
+            <option value="admin">Role: Admin/Alumni</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header (Dynamic greetings & info) -->
+      <header class="top-header">
+        <div class="page-title">
+          <h1 id="header-title">Welcome Back</h1>
+          <p id="header-subtitle">Empower your career through guidance and community.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btn-quick-nav-mentors">
+            <i data-lucide="search"></i> Find Mentors
+          </button>
+          <button class="btn btn-primary" id="btn-quick-nav-forum">
+            <i data-lucide="plus-circle"></i> Ask Question
+          </button>
+        </div>
+      </header>
+
+      <!-- ==================== HOME VIEW ==================== -->
+      <section id="view-home" class="view-section active">
+        <!-- Hero section -->
+        <div class="hero-card">
+          <div class="hero-content">
+            <h2>Bridge the Gap Between Campus & Career</h2>
+            <p>Connect with distinguished NSUT alumni working at top companies worldwide. Schedule 1-on-1 sessions, get resume reviews, and join discussions.</p>
+            <div style="display:flex; gap:12px;">
+              <button class="btn btn-primary" id="hero-btn-mentors">Browse Mentors</button>
+              <button class="btn btn-secondary" id="hero-btn-forum">Go to Forum</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i data-lucide="users-2"></i>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-mentors-count">0</div>
+              <div class="stat-label">Verified Mentors</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="color: var(--accent-purple); background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.2);">
+              <i data-lucide="calendar-check"></i>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-bookings-count">0</div>
+              <div class="stat-label">Mentorship Sessions</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="color: var(--accent-cyan); background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.2);">
+              <i data-lucide="messages-square"></i>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-forum-count">0</div>
+              <div class="stat-label">Discussion Threads</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="color: var(--success); background: var(--success-bg); border-color: rgba(16,185,129,0.2);">
+              <i data-lucide="check-circle-2"></i>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-success-rate">98%</div>
+              <div class="stat-label">Success Rate</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Home Grid -->
+        <div class="home-grid">
+          <!-- Recent Forum Discussions -->
+          <div>
+            <div class="section-headline">
+              <h3>Trending Discussions</h3>
+              <a href="#forum" style="font-size: 0.85rem; color: var(--accent-indigo); font-weight: 600;">View All discussions &rarr;</a>
+            </div>
+            <div class="forum-feed" id="home-forum-feed">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Featured Mentors / Booking Info -->
+          <div>
+            <div class="section-headline">
+              <h3>Active Mentors</h3>
+              <a href="#mentors" style="font-size: 0.85rem; color: var(--accent-indigo); font-weight: 600;">Browse All &rarr;</a>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:16px;" id="home-mentors-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== MENTORS VIEW ==================== -->
+      <section id="view-mentors" class="view-section">
+        <!-- Filters -->
+        <div class="directory-filters">
+          <div class="search-input-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="mentor-search-input" placeholder="Search by name, company, bio...">
+          </div>
+          <div class="select-wrapper">
+            <select id="mentor-filter-domain">
+              <option value="all">All Domains</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Artificial Intelligence & ML">Artificial Intelligence & ML</option>
+              <option value="Product Management">Product Management</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Data Science & Analytics">Data Science & Analytics</option>
+            </select>
+          </div>
+          <div class="select-wrapper">
+            <select id="mentor-filter-availability">
+              <option value="all">Any Availability</option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Mentors Grid -->
+        <div class="mentors-grid" id="mentors-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- ==================== FORUM VIEW ==================== -->
+      <section id="view-forum" class="view-section">
+        <div class="forum-layout">
+          <!-- Left Sidebar Categories -->
+          <nav class="forum-sidebar-nav">
+            <button class="category-filter-btn active" data-category="all">
+              <span>All Questions</span>
+              <span class="category-badge" id="badge-cat-all">0</span>
+            </button>
+            <button class="category-filter-btn" data-category="Career Advice">
+              <span>Career Advice</span>
+              <span class="category-badge" id="badge-cat-career">0</span>
+            </button>
+            <button class="category-filter-btn" data-category="Tech Stack">
+              <span>Tech Stack</span>
+              <span class="category-badge" id="badge-cat-tech">0</span>
+            </button>
+            <button class="category-filter-btn" data-category="Interview Prep">
+              <span>Interview Prep</span>
+              <span class="category-badge" id="badge-cat-interview">0</span>
+            </button>
+            <button class="category-filter-btn" data-category="Resume Review">
+              <span>Resume Review</span>
+              <span class="category-badge" id="badge-cat-resume">0</span>
+            </button>
+          </nav>
+
+          <!-- Right Content Feed -->
+          <div class="forum-main">
+            <!-- Composer Card -->
+            <div class="forum-composer-card">
+              <h4 style="font-size: 1.05rem;">Ask a New Question</h4>
+              <div class="forum-composer-row">
+                <input type="text" id="forum-post-title" placeholder="What is your question? Be specific...">
+                <select id="forum-post-category">
+                  <option value="Career Advice">Career Advice</option>
+                  <option value="Tech Stack">Tech Stack</option>
+                  <option value="Interview Prep">Interview Prep</option>
+                  <option value="Resume Review">Resume Review</option>
+                </select>
+              </div>
+              <textarea id="forum-post-content" placeholder="Provide more details, context, and what you've tried so far..."></textarea>
+              <div class="forum-composer-actions">
+                <button class="btn btn-primary" id="btn-submit-forum-post">
+                  <i data-lucide="send"></i> Post Question
+                </button>
+              </div>
+            </div>
+
+            <!-- Feed -->
+            <div class="forum-feed" id="forum-feed-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DASHBOARD VIEW ==================== -->
+      <section id="view-dashboard" class="view-section">
+        <!-- Tabs -->
+        <div class="dashboard-tabs">
+          <button class="dashboard-tab-btn active" data-tab="overview">Overview</button>
+          <button class="dashboard-tab-btn" data-tab="bookings">Bookings Requests</button>
+          <button class="dashboard-tab-btn" data-tab="mentors">Manage Mentors</button>
+          <button class="dashboard-tab-btn" data-tab="forum">Manage Forum</button>
+        </div>
+
+        <!-- OVERVIEW SUB-VIEW -->
+        <div id="db-tab-overview" class="dashboard-view active">
+          <div style="display:flex; flex-direction:column; gap:24px;">
+            <!-- Simple Metrics -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+              <div class="stat-card" style="padding: 16px;">
+                <div class="stat-icon" style="width: 44px; height: 44px;"><i data-lucide="hourglass" style="width: 20px; height: 20px;"></i></div>
+                <div>
+                  <div class="stat-value" style="font-size: 1.35rem;" id="db-stat-pending-bookings">0</div>
+                  <div class="stat-label" style="font-size: 0.8rem; margin-top: 2px;">Pending Bookings</div>
+                </div>
+              </div>
+              <div class="stat-card" style="padding: 16px;">
+                <div class="stat-icon" style="width: 44px; height: 44px; color: var(--success); background-color: var(--success-bg); border-color: rgba(16,185,129,0.2);">
+                  <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+                </div>
+                <div>
+                  <div class="stat-value" style="font-size: 1.35rem;" id="db-stat-approved-bookings">0</div>
+                  <div class="stat-label" style="font-size: 0.8rem; margin-top: 2px;">Approved Bookings</div>
+                </div>
+              </div>
+              <div class="stat-card" style="padding: 16px;">
+                <div class="stat-icon" style="width: 44px; height: 44px; color: var(--accent-purple); background-color: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.2);">
+                  <i data-lucide="user-plus" style="width: 20px; height: 20px;"></i>
+                </div>
+                <div>
+                  <div class="stat-value" style="font-size: 1.35rem;" id="db-stat-new-mentors">0</div>
+                  <div class="stat-label" style="font-size: 0.8rem; margin-top: 2px;">Verified Alumni</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Recents lists -->
+            <div class="home-grid" style="gap: 20px;">
+              <div>
+                <h4 style="margin-bottom: 12px; font-size: 1rem;">Recent Mentorship Inquiries</h4>
+                <div class="activity-list" id="db-recent-bookings-list">
+                  <!-- Dynamic content -->
+                </div>
+              </div>
+              <div>
+                <h4 style="margin-bottom: 12px; font-size: 1rem;">Platform Status</h4>
+                <div class="stat-card" style="flex-direction: column; align-items: stretch; gap: 12px;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary)">Database Status:</span>
+                    <span style="color:var(--success); font-weight: 600;">Active (LocalStorage)</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary)">System Version:</span>
+                    <span>v1.0.4-Beta</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <span style="color:var(--text-secondary)">Simulator Account:</span>
+                    <span id="db-simulator-name" style="font-weight: 600; color: var(--accent-indigo)">Student Sandbox</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKINGS MANAGING SUB-VIEW -->
+        <div id="db-tab-bookings" class="dashboard-view">
+          <div class="table-wrapper">
+            <table class="custom-table" id="db-bookings-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Mentor Requested</th>
+                  <th>Date & Time</th>
+                  <th>Purpose</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="db-bookings-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MANAGE MENTORS SUB-VIEW -->
+        <div id="db-tab-mentors" class="dashboard-view">
+          <div class="top-header" style="margin-bottom: 16px;">
+            <h3>Verified Mentors</h3>
+            <button class="btn btn-primary btn-sm" id="btn-add-mentor-modal">
+              <i data-lucide="plus"></i> Add New Mentor Profile
+            </button>
+          </div>
+          
+          <div class="table-wrapper">
+            <table class="custom-table" id="db-mentors-table">
+              <thead>
+                <tr>
+                  <th>Mentor</th>
+                  <th>Domain</th>
+                  <th>Company</th>
+                  <th>Experience</th>
+                  <th>Availability Slots</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="db-mentors-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MANAGE FORUM SUB-VIEW -->
+        <div id="db-tab-forum" class="dashboard-view">
+          <div class="table-wrapper">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Post Title</th>
+                  <th>Category</th>
+                  <th>Author</th>
+                  <th>Replies</th>
+                  <th>Likes</th>
+                  <th>Date Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="db-forum-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== BOOKING MODAL ==================== -->
+  <div class="modal-overlay" id="booking-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Request Mentorship Session</h3>
+        <button class="modal-close-btn" id="btn-close-booking-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="booking-request-form">
+          <input type="hidden" id="booking-mentor-id">
+          
+          <div class="form-group">
+            <label for="booking-mentor-name">Selected Mentor</label>
+            <input type="text" id="booking-mentor-name" disabled style="background-color: rgba(255,255,255,0.05); font-weight:600;">
+          </div>
+          
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="booking-student-name">Your Full Name</label>
+              <input type="text" id="booking-student-name" required placeholder="e.g., Aditya Roy">
+            </div>
+            <div class="form-group">
+              <label for="booking-student-email">Email Address</label>
+              <input type="email" id="booking-student-email" required placeholder="e.g., aditya@student.nsut.ac.in">
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="booking-date">Select Date</label>
+              <input type="date" id="booking-date" required>
+            </div>
+            <div class="form-group">
+              <label for="booking-slot">Select Time Slot</label>
+              <select id="booking-slot" required>
+                <!-- Filled dynamically by mentor availability -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="booking-purpose">Purpose of Session</label>
+            <textarea id="booking-purpose" required placeholder="Describe what you'd like to discuss (e.g., mock interview, portfolio feedback, coding help)..." style="min-height: 100px;"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-cancel-booking">Cancel</button>
+        <button class="btn btn-primary" type="submit" form="booking-request-form">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ADD MENTOR MODAL ==================== -->
+  <div class="modal-overlay" id="mentor-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Mentor Profile</h3>
+        <button class="modal-close-btn" id="btn-close-mentor-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="add-mentor-form">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="mentor-name">Full Name</label>
+              <input type="text" id="mentor-name" required placeholder="e.g., Vikram Aditya">
+            </div>
+            <div class="form-group">
+              <label for="mentor-domain">Domain Specialty</label>
+              <select id="mentor-domain" required>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Artificial Intelligence & ML">Artificial Intelligence & ML</option>
+                <option value="Product Management">Product Management</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="Data Science & Analytics">Data Science & Analytics</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="mentor-company">Company</label>
+              <input type="text" id="mentor-company" required placeholder="e.g., Amazon, Apple, Uber">
+            </div>
+            <div class="form-group">
+              <label for="mentor-experience">Years of Experience</label>
+              <input type="number" id="mentor-experience" required min="1" max="40" placeholder="e.g., 5">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mentor-avatar-seed">Avatar Character (Visual Seed)</label>
+            <input type="text" id="mentor-avatar-seed" required placeholder="e.g., Vikram, Priya, Sarah, David (for custom graphic generation)">
+          </div>
+
+          <div class="form-group">
+            <label for="mentor-availability-slots">Availability Slots (Comma separated)</label>
+            <input type="text" id="mentor-availability-slots" required placeholder="e.g., Monday 4:00 PM - 6:00 PM, Thursday 1:00 PM - 3:00 PM">
+          </div>
+
+          <div class="form-group">
+            <label for="mentor-bio">Brief Biography</label>
+            <textarea id="mentor-bio" required placeholder="Provide a summary of your career, research interests, and what kind of mentorship you offer..." style="min-height: 100px;"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-cancel-mentor">Cancel</button>
+        <button class="btn btn-primary" type="submit" form="add-mentor-form">Save Mentor Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DISCUSSION DETAIL MODAL ==================== -->
+  <div class="modal-overlay" id="post-detail-modal">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3 id="detail-modal-category" class="post-category-tag">Category</h3>
+        <button class="modal-close-btn" id="btn-close-post-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="post-detail-overlay">
+          <!-- Main Post Content -->
+          <div>
+            <h2 id="detail-modal-title" style="margin-bottom: 12px; font-size:1.5rem;">Post Title</h2>
+            <div class="post-header" style="margin-bottom: 16px;">
+              <div class="post-author-group">
+                <span id="detail-modal-author" style="font-weight: 700;">Author</span>
+                <span id="detail-modal-role" class="post-author-role">Student</span>
+              </div>
+              <span id="detail-modal-date" class="post-time">Date</span>
+            </div>
+            <p id="detail-modal-content" style="color:var(--text-secondary); line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap;">
+              Post body content goes here.
+            </p>
+          </div>
+
+          <!-- Comments Header -->
+          <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <h4 style="font-size: 1.05rem; margin-bottom: 12px;">Replies (<span id="detail-comments-count">0</span>)</h4>
+            <div class="comments-section" id="detail-comments-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Post Comment Form -->
+          <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Leave a Reply</h4>
+            <form id="post-comment-form">
+              <input type="hidden" id="comment-post-id">
+              <div class="form-group" style="margin-bottom: 12px;">
+                <textarea id="comment-text" required placeholder="Type your answer, solution, or comment here..." style="min-height: 80px;"></textarea>
+              </div>
+              <div style="display:flex; justify-content: flex-end;">
+                <button class="btn btn-primary" type="submit">
+                  <i data-lucide="message-square"></i> Post Reply
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seed Script and App Core Script -->
+  <script src="mockData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
